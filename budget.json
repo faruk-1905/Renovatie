@@ -154,7 +154,7 @@
     {
       "id": "15",
       "name": "Stofzuiger",
-      "cents": null,
+      "cents": 30000,
       "paid": false,
       "paidCents": 0,
       "dueDate": "",
