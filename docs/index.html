@@ -1,8 +1,808 @@
-<!doctype html><html lang="nl"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Renovatiebudget</title><style>body{font:16px system-ui;background:#f4f6f8;color:#18252d;max-width:800px;margin: auto;padding:20px}section{background:white;border-radius:14px;padding:20px;margin:15px 0}input,button{font:inherit;padding:9px;border:1px solid #bbc4ca;border-radius:7px;min-width:0}button{cursor:pointer;background:#e8f0ee}label{display:block;margin:8px 0}.item{display:grid;grid-template-columns:24px minmax(0,1fr) 95px 36px;gap:6px;margin:8px 0;align-items:center}.item input{width:100%;box-sizing:border-box}h1,h2{margin:8px 0}small{color:#52616b}#status{white-space:pre-wrap} .sum{font-size:26px;font-weight:bold} [hidden]{display:none!important}</style><h1>Renovatiebudget</h1><section id="login"><label>Repository (eigenaar/naam)<input id="repo" placeholder="naam/renovatiebudget"></label><label>GitHub toegangstoken <input id="token" type="password" autocomplete="off"></label><button id="connect">Verbinden</button></section><p id="status" role="status">Niet verbonden</p><main id="app" hidden><section><button id="logout">Uitloggen</button> <button id="reload">Vernieuwen</button><p>Nog te betalen inclusief extra</p><div class="sum" id="top"></div></section><section><label>Filter <select id="filter"><option value="all">Alles</option><option value="open">Openstaand</option><option value="paid">Betaald</option></select></label><div id="rows"></div><form id="add"><input id="name" placeholder="Nieuwe aankoop" required><input id="amount" placeholder="Bedrag (€)" inputmode="decimal"><button>Toevoegen</button></form></section><section><label>Extra kosten (€) <input id="extra" inputmode="decimal"></label><div id="totals"></div><button id="backup">Back-up downloaden</button></section></main><script>
-'use strict';const $=id=>document.getElementById(id),money=n=>n.toLocaleString('nl-BE',{style:'currency',currency:'EUR'});let data,sha,repo,token,busy=false;const status=s=>$('status').textContent=s;function cents(v){if(!String(v).trim())return null;let n=Number(String(v).replace(',','.'));if(!Number.isFinite(n)||n<0||n>1e9)throw Error('Ongeldig bedrag');return Math.round(n*100)}const val=n=>n===null?'':String(n/100);const enc=o=>btoa(Array.from(new TextEncoder().encode(JSON.stringify(o,null,2)),b=>String.fromCharCode(b)).join(''));const dec=s=>JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(s),c=>c.charCodeAt(0))));async function api(method='GET',body){let r=await fetch('https://api.github.com/repos/'+repo.split('/').map(encodeURIComponent).join('/')+'/contents/budget.json',{method,cache:'no-store',headers:{Authorization:'Bearer '+token,Accept:'application/vnd.github+json','Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{})});if(!r.ok){let e=Error('GitHub: '+r.status);e.code=r.status;throw e}return r.json()}
-async function load(){let r=await api();data=dec(r.content);sha=r.sha;render();status('Online • laatste versie geladen')}
-function render(){let paid=data.items.reduce((s,i)=>s+(i.paid?(i.cents||0):0),0),total=data.items.reduce((s,i)=>s+(i.cents||0),0),open=total-paid,extra=data.extra||0; $('top').textContent=money((open+extra)/100);$('extra').value=val(extra);$('totals').textContent='';for(let [k,v] of [['Alle aankopen',total],['Betaald',paid],['Openstaand',open],['Totale projectkosten',total+extra],['TOTAAL NOG TE BETALEN',open+extra]]){let p=document.createElement('p');p.textContent=k+': '+money(v/100);if(k.startsWith('TOTAAL'))p.className='sum';$('totals').append(p)}let p=document.createElement('small');p.textContent=data.items.filter(i=>!i.paid&&i.cents===null).length+' openstaande items zonder prijs';$('totals').append(p);$('rows').replaceChildren();for(let i of data.items.filter(i=>$('filter').value==='all'||($('filter').value==='paid'?i.paid:!i.paid))){let row=document.createElement('div');row.className='item';let c=document.createElement('input');c.type='checkbox';c.checked=i.paid;c.setAttribute('aria-label','Betaald: '+i.name);c.onchange=()=>edit(i.id,'paid',c.checked);let n=document.createElement('input');n.value=i.name;n.setAttribute('aria-label','Omschrijving');n.onchange=()=>edit(i.id,'name',n.value.trim());let a=document.createElement('input');a.value=val(i.cents);a.placeholder='Onbekend';a.inputMode='decimal';a.setAttribute('aria-label','Bedrag');a.onchange=()=>{try{edit(i.id,'cents',cents(a.value))}catch(e){status(e.message);render()}};let b=document.createElement('button');b.textContent='×';b.setAttribute('aria-label','Verwijder '+i.name);b.onclick=()=>{if(confirm('Verwijderen?'))save('Aankoop verwijderd',d=>{let j=d.items.find(x=>x.id===i.id);if(JSON.stringify(j)!==JSON.stringify(i))throw Error('Item intussen gewijzigd');d.items=d.items.filter(x=>x.id!==i.id)})};row.append(c,n,a,b);$('rows').append(row)}}
-function edit(id,k,v){let old=data.items.find(i=>i.id===id)[k];if(old===v)return;if(k==='name'&&!v){render();return}save('Aankoop bijgewerkt',d=>{let i=d.items.find(x=>x.id===id);if(!i||i[k]!==old)throw Error('Dezelfde waarde is intussen gewijzigd. Probeer opnieuw.');i[k]=v})}
-async function save(message,mutate){if(busy)return;busy=true;$('app').inert=true;status('Bezig met opslaan…');try{for(let attempt=0;attempt<3;attempt++){let r=await api(),d=dec(r.content);mutate(d);try{await api('PUT',{message,content:enc(d),sha:r.sha});await load();status('Alle wijzigingen opgeslagen');return}catch(e){if(e.code!==409||attempt===2)throw e}}}catch(e){try{await load()}catch{}status('Opslag niet bevestigd: '+e.message+' — controleer en probeer opnieuw.')}finally{busy=false;$('app').inert=false;render()}}
-$('connect').onclick=async()=>{repo=$('repo').value.trim();token=$('token').value.trim();if(!/^[\w.-]+\/[\w.-]+$/.test(repo)||!token)return status('Vul repository en token in');$('connect').disabled=true;try{await load();$('login').hidden=true;$('app').hidden=false;$('token').value=''}catch(e){status(e.message);token=''}finally{$('connect').disabled=false}};$('logout').onclick=()=>location.reload();$('reload').onclick=()=>load().catch(e=>status(e.message));$('filter').onchange=render;$('extra').onchange=()=>{try{let v=cents($('extra').value)||0,old=data.extra;if(v!==old)save('Extra budget bijgewerkt',d=>{if(d.extra!==old)throw Error('Extra budget intussen gewijzigd');d.extra=v})}catch(e){status(e.message);render()}};$('add').onsubmit=e=>{e.preventDefault();try{let i={id:crypto.randomUUID(),name:$('name').value.trim(),cents:cents($('amount').value),paid:false};if(!i.name)return;save('Aankoop toegevoegd',d=>d.items.push(i));$('name').value='';$('amount').value=''}catch(e){status(e.message)}};$('backup').onclick=()=>{let u=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'})),a=document.createElement('a');a.href=u;a.download='budget-backup.json';a.click();setTimeout(()=>URL.revokeObjectURL(u),1000)};setInterval(()=>{if(data&&!busy&&!$('app').contains(document.activeElement))load().catch(e=>status(e.message))},20000);window.addEventListener('beforeunload',e=>{if(busy){e.preventDefault();e.returnValue=''}});
-</script></html>
+
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Renovatiebudget</title>
+
+<style>
+:root {
+    color-scheme: light dark;
+    --bg: #f2f4f7;
+    --card: #ffffff;
+    --ink: #17252d;
+    --muted: #53636e;
+    --line: #d5dce2;
+    --accent: #176b54;
+    --soft: #e5f2ec;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #111619;
+        --card: #20282d;
+        --ink: #edf2f5;
+        --muted: #aebcc5;
+        --line: #43515a;
+        --accent: #8bd9b7;
+        --soft: #263d35;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font: 16px system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    max-width: 800px;
+    margin: auto;
+    padding:
+        max(16px, env(safe-area-inset-top))
+        max(12px, env(safe-area-inset-right))
+        calc(150px + env(safe-area-inset-bottom))
+        max(12px, env(safe-area-inset-left));
+}
+
+section {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 16px;
+    margin: 12px 0;
+}
+
+input, button, select {
+    font: inherit;
+    min-width: 0;
+    min-height: 44px;
+    padding: 9px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    color: var(--ink);
+    background: var(--card);
+}
+
+button {
+    cursor: pointer;
+    background: var(--soft);
+    font-weight: 600;
+    touch-action: manipulation;
+}
+
+button:disabled {
+    opacity: .5;
+}
+
+label {
+    display: block;
+    margin: 8px 0;
+}
+
+#login input {
+    display: block;
+    width: 100%;
+    margin-top: 6px;
+}
+
+#connect {
+    width: 100%;
+}
+
+.item {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 90px 44px;
+    gap: 5px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.item input {
+    width: 100%;
+}
+
+.item input[type="checkbox"] {
+    width: 28px;
+    height: 28px;
+    min-height: 0;
+    margin: 8px;
+    accent-color: var(--accent);
+}
+
+.item input:not([type="checkbox"]) {
+    padding: 7px 5px;
+}
+
+.item:has(input:checked) input:not([type="checkbox"]) {
+    color: var(--muted);
+    text-decoration: line-through;
+}
+
+.item button {
+    color: #b94d4d;
+    font-size: 22px;
+    padding: 0;
+}
+
+h1 {
+    font-size: 27px;
+    margin: 8px 0 16px;
+}
+
+small {
+    color: var(--muted);
+}
+
+#status {
+    white-space: pre-wrap;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+}
+
+.sum {
+    font-size: clamp(23px, 6vw, 32px);
+    font-weight: 750;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+}
+
+[hidden] {
+    display: none !important;
+}
+
+#add {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 100px;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+#add button {
+    grid-column: 1 / -1;
+}
+
+#extra {
+    width: 130px;
+    max-width: 100%;
+}
+
+#totals p {
+    overflow-wrap: anywhere;
+}
+
+#dock {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    border-top: 1px solid var(--line);
+    padding:
+        10px
+        max(16px, env(safe-area-inset-right))
+        calc(10px + env(safe-area-inset-bottom))
+        max(16px, env(safe-area-inset-left));
+    z-index: 5;
+}
+
+#dock > div {
+    max-width: 768px;
+    margin: auto;
+}
+
+#dockstatus {
+    display: block;
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+#dock .sum {
+    line-height: 1.2;
+}
+
+@media (max-width: 380px) {
+    section {
+        padding: 10px;
+    }
+
+    .item {
+        grid-template-columns: 40px minmax(0, 1fr) 78px 44px;
+        gap: 3px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<h1>🏠 Renovatiebudget</h1>
+
+<section id="login">
+
+    <label>
+        GitHub repository
+        <input
+            id="repo"
+            placeholder="gebruikersnaam/renovatiebudget"
+            autocapitalize="none"
+            autocorrect="off"
+            spellcheck="false"
+        >
+    </label>
+
+    <label>
+        GitHub toegangstoken
+        <input
+            id="token"
+            type="password"
+            autocomplete="off"
+        >
+    </label>
+
+    <button id="connect">Verbinden</button>
+
+</section>
+
+<p id="status" role="status">Niet verbonden</p>
+
+<main id="app" hidden>
+
+    <section>
+        <button id="logout">Uitloggen</button>
+        <button id="reload">Vernieuwen</button>
+
+        <p>Nog te betalen inclusief extra</p>
+        <div class="sum" id="top"></div>
+    </section>
+
+    <section>
+        <label>
+            Filter
+            <select id="filter">
+                <option value="all">Alles</option>
+                <option value="open">Openstaand</option>
+                <option value="paid">Betaald</option>
+            </select>
+        </label>
+
+        <div id="rows"></div>
+
+        <form id="add">
+            <input
+                id="name"
+                placeholder="Nieuwe aankoop"
+                required
+            >
+
+            <input
+                id="amount"
+                placeholder="Bedrag (€)"
+                inputmode="decimal"
+            >
+
+            <button type="submit">＋ Toevoegen</button>
+        </form>
+    </section>
+
+    <section>
+        <label>
+            Extra renovatiekosten (€)
+            <input id="extra" inputmode="decimal">
+        </label>
+
+        <div id="totals"></div>
+
+        <button id="backup">Back-up downloaden</button>
+    </section>
+
+</main>
+
+<footer id="dock" hidden>
+    <div>
+        <small>Nog te betalen inclusief extra</small>
+        <div class="sum" id="docktotal"></div>
+        <small id="dockstatus" role="status"></small>
+    </div>
+</footer>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+
+const money = n => n.toLocaleString("nl-BE", {
+    style: "currency",
+    currency: "EUR"
+});
+
+let data;
+let sha;
+let repo;
+let token;
+let busy = false;
+let loading = false;
+
+function status(message) {
+    $("status").textContent = message;
+    $("dockstatus").textContent = message;
+}
+
+function cents(value) {
+    if (!String(value).trim()) return null;
+
+    const n = Number(String(value).replace(",", "."));
+
+    if (!Number.isFinite(n) || n < 0 || n > 1e9) {
+        throw new Error("Ongeldig bedrag");
+    }
+
+    return Math.round(n * 100);
+}
+
+const val = n => n === null ? "" : String(n / 100);
+
+function enc(object) {
+    return btoa(
+        Array.from(
+            new TextEncoder().encode(
+                JSON.stringify(object, null, 2)
+            ),
+            b => String.fromCharCode(b)
+        ).join("")
+    );
+}
+
+function dec(content) {
+    return JSON.parse(
+        new TextDecoder().decode(
+            Uint8Array.from(
+                atob(content),
+                c => c.charCodeAt(0)
+            )
+        )
+    );
+}
+
+async function api(method = "GET", body) {
+
+    const url =
+        "https://api.github.com/repos/" +
+        repo.split("/").map(encodeURIComponent).join("/") +
+        "/contents/budget.json";
+
+    const response = await fetch(url, {
+        method,
+        cache: "no-store",
+        headers: {
+            Authorization: "Bearer " + token,
+            Accept: "application/vnd.github+json",
+            "Content-Type": "application/json"
+        },
+        ...(body ? {
+            body: JSON.stringify(body)
+        } : {})
+    });
+
+    if (!response.ok) {
+        const error = new Error(
+            "GitHub: " + response.status
+        );
+        error.code = response.status;
+        throw error;
+    }
+
+    return response.json();
+}
+
+async function load() {
+    const result = await api();
+
+    data = dec(result.content);
+    sha = result.sha;
+
+    render();
+
+    status("Online • laatste versie geladen");
+}
+
+function render() {
+
+    const paid = data.items.reduce(
+        (sum, item) =>
+            sum + (item.paid ? (item.cents || 0) : 0),
+        0
+    );
+
+    const total = data.items.reduce(
+        (sum, item) => sum + (item.cents || 0),
+        0
+    );
+
+    const open = total - paid;
+    const extra = data.extra || 0;
+
+    $("top").textContent = money((open + extra) / 100);
+    $("docktotal").textContent = $("top").textContent;
+    $("extra").value = val(extra);
+
+    $("totals").replaceChildren();
+
+    const overview = [
+        ["Alle aankopen", total],
+        ["Reeds betaald", paid],
+        ["Openstaande aankopen", open],
+        ["Extra renovatiekosten", extra],
+        ["Totale projectkosten", total + extra],
+        ["TOTAAL NOG TE BETALEN", open + extra]
+    ];
+
+    for (const [label, amount] of overview) {
+
+        const p = document.createElement("p");
+
+        p.textContent = label + ": " + money(amount / 100);
+
+        if (label.startsWith("TOTAAL")) {
+            p.className = "sum";
+        }
+
+        $("totals").append(p);
+    }
+
+    const unknown = data.items.filter(
+        item => !item.paid && item.cents === null
+    ).length;
+
+    const note = document.createElement("small");
+    note.textContent = unknown + " openstaande items zonder prijs";
+
+    $("totals").append(note);
+    $("rows").replaceChildren();
+
+    const filter = $("filter").value;
+
+    const filtered = data.items.filter(
+        item =>
+            filter === "all" ||
+            (filter === "paid" ? item.paid : !item.paid)
+    );
+
+    for (const item of filtered) {
+
+        const row = document.createElement("div");
+        row.className = "item";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = item.paid;
+        checkbox.setAttribute(
+            "aria-label",
+            "Betaald: " + item.name
+        );
+
+        checkbox.onchange = () =>
+            edit(item.id, "paid", checkbox.checked);
+
+        const name = document.createElement("input");
+        name.value = item.name;
+        name.setAttribute("aria-label", "Omschrijving");
+
+        name.onchange = () =>
+            edit(item.id, "name", name.value.trim());
+
+        const amount = document.createElement("input");
+        amount.value = val(item.cents);
+        amount.placeholder = "Onbekend";
+        amount.inputMode = "decimal";
+        amount.setAttribute("aria-label", "Bedrag");
+
+        amount.onchange = () => {
+            try {
+                edit(item.id, "cents", cents(amount.value));
+            } catch (error) {
+                status(error.message);
+                render();
+            }
+        };
+
+        const remove = document.createElement("button");
+        remove.textContent = "×";
+
+        remove.setAttribute(
+            "aria-label",
+            "Verwijder " + item.name
+        );
+
+        remove.onclick = () => {
+
+            if (!confirm(item.name + " verwijderen?")) return;
+
+            save("Aankoop verwijderd", d => {
+
+                const current = d.items.find(
+                    x => x.id === item.id
+                );
+
+                if (
+                    JSON.stringify(current) !==
+                    JSON.stringify(item)
+                ) {
+                    throw new Error("Item intussen gewijzigd");
+                }
+
+                d.items = d.items.filter(
+                    x => x.id !== item.id
+                );
+            });
+        };
+
+        row.append(checkbox, name, amount, remove);
+        $("rows").append(row);
+    }
+}
+
+function edit(id, key, value) {
+
+    const old = data.items.find(
+        item => item.id === id
+    )[key];
+
+    if (old === value) return;
+
+    if (key === "name" && !value) {
+        render();
+        return;
+    }
+
+    save("Aankoop bijgewerkt", d => {
+
+        const item = d.items.find(x => x.id === id);
+
+        if (!item || item[key] !== old) {
+            throw new Error(
+                "Dezelfde waarde is intussen gewijzigd. Probeer opnieuw."
+            );
+        }
+
+        item[key] = value;
+    });
+}
+
+async function save(message, mutate) {
+
+    if (busy) return;
+
+    busy = true;
+    $("app").inert = true;
+
+    status("⏳ Bezig met opslaan…");
+
+    try {
+
+        for (let attempt = 0; attempt < 3; attempt++) {
+
+            const result = await api();
+            const latest = dec(result.content);
+
+            mutate(latest);
+
+            try {
+
+                await api("PUT", {
+                    message,
+                    content: enc(latest),
+                    sha: result.sha
+                });
+
+                await load();
+
+                status("✓ Alle wijzigingen opgeslagen");
+
+                return;
+
+            } catch (error) {
+
+                if (error.code !== 409 || attempt === 2) {
+                    throw error;
+                }
+            }
+        }
+
+    } catch (error) {
+
+        try {
+            await load();
+        } catch {}
+
+        status(
+            "⚠ Opslag niet bevestigd: " +
+            error.message +
+            " — controleer en probeer opnieuw."
+        );
+
+    } finally {
+
+        busy = false;
+        $("app").inert = false;
+        render();
+    }
+}
+
+$("connect").onclick = async () => {
+
+    repo = $("repo").value.trim();
+    token = $("token").value.trim();
+
+    if (!/^[\w.-]+\/[\w.-]+$/.test(repo) || !token) {
+        status("Vul repository en token in");
+        return;
+    }
+
+    $("connect").disabled = true;
+
+    try {
+
+        await load();
+
+        $("login").hidden = true;
+        $("app").hidden = false;
+        $("dock").hidden = false;
+        $("token").value = "";
+
+    } catch (error) {
+
+        status(error.message);
+        token = "";
+
+    } finally {
+
+        $("connect").disabled = false;
+    }
+};
+
+$("logout").onclick = () => location.reload();
+
+async function refresh() {
+
+    if (busy || loading) return;
+
+    loading = true;
+
+    try {
+
+        const result = await api();
+
+        if (
+            !busy &&
+            !$("app").contains(document.activeElement)
+        ) {
+
+            if (result.sha !== sha) {
+
+                data = dec(result.content);
+                sha = result.sha;
+
+                render();
+            }
+
+            status("Online • laatste versie geladen");
+        }
+
+    } catch (error) {
+
+        status(error.message);
+
+    } finally {
+
+        loading = false;
+    }
+}
+
+$("reload").onclick = () => {
+    $("reload").blur();
+    refresh();
+};
+
+$("filter").onchange = render;
+
+$("extra").onchange = () => {
+
+    try {
+
+        const value = cents($("extra").value) || 0;
+        const old = data.extra;
+
+        if (value !== old) {
+
+            save("Extra budget bijgewerkt", d => {
+
+                if (d.extra !== old) {
+                    throw new Error(
+                        "Extra budget intussen gewijzigd"
+                    );
+                }
+
+                d.extra = value;
+            });
+        }
+
+    } catch (error) {
+
+        status(error.message);
+        render();
+    }
+};
+
+$("add").onsubmit = event => {
+
+    event.preventDefault();
+
+    try {
+
+        const item = {
+            id: crypto.randomUUID(),
+            name: $("name").value.trim(),
+            cents: cents($("amount").value),
+            paid: false
+        };
+
+        if (!item.name) return;
+
+        save("Aankoop toegevoegd", d => {
+            d.items.push(item);
+        });
+
+        $("name").value = "";
+        $("amount").value = "";
+
+    } catch (error) {
+
+        status(error.message);
+    }
+};
+
+$("backup").onclick = () => {
+
+    const blob = new Blob(
+        [JSON.stringify(data, null, 2)],
+        { type: "application/json" }
+    );
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "budget-backup.json";
+    link.click();
+
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+};
+
+setInterval(() => {
+
+    if (
+        data &&
+        !busy &&
+        !$("app").contains(document.activeElement)
+    ) {
+        refresh();
+    }
+
+}, 20000);
+
+window.addEventListener("beforeunload", event => {
+
+    if (busy) {
+        event.preventDefault();
+        event.returnValue = "";
+    }
+});
+
+</script>
+</body>
+</html>
