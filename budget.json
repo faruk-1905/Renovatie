@@ -5,157 +5,263 @@
       "id": "0",
       "name": "Tv",
       "cents": 25000,
-      "paid": true
+      "paid": true,
+      "paidCents": 25000,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "1",
       "name": "Wasmachine",
       "cents": 85400,
-      "paid": true
+      "paid": true,
+      "paidCents": 85400,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "2",
       "name": "Droogkast",
       "cents": 62000,
-      "paid": true
+      "paid": true,
+      "paidCents": 62000,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "3",
       "name": "Diepvries",
       "cents": 87900,
-      "paid": true
+      "paid": true,
+      "paidCents": 87900,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "4",
       "name": "Spouwmuur",
       "cents": 370000,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "5",
       "name": "Kasten",
       "cents": 500000,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "6",
       "name": "Douchewand",
       "cents": 48779,
-      "paid": true
+      "paid": true,
+      "paidCents": 48779,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "7",
       "name": "Douchetegel",
       "cents": 60000,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "8",
       "name": "Printer",
       "cents": 22100,
-      "paid": true
+      "paid": true,
+      "paidCents": 22100,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "9",
       "name": "Detremerrie spiegelkast",
       "cents": 97574,
-      "paid": true
+      "paid": true,
+      "paidCents": 97574,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "10",
       "name": "Wc pompbak",
       "cents": 20600,
-      "paid": true
+      "paid": true,
+      "paidCents": 20600,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "11",
       "name": "Sofa",
       "cents": 310000,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "12",
       "name": "Eettafel",
       "cents": 114500,
-      "paid": true
+      "paid": true,
+      "paidCents": 114500,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "13",
       "name": "Stoelen",
       "cents": 85500,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "14",
       "name": "Rolluiken",
       "cents": 150000,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "15",
       "name": "Stofzuiger",
       "cents": null,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "16",
       "name": "Dekbed",
       "cents": 19000,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "17",
       "name": "Deuren",
       "cents": 500000,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "18",
       "name": "Bureau",
       "cents": 100000,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "19",
       "name": "Verf",
       "cents": 200000,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "20",
       "name": "Strijkplank",
       "cents": null,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "21",
       "name": "Strijkijzer",
       "cents": null,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "24",
       "name": "Kachel / open haard",
       "cents": null,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "25",
       "name": "Afdekplaatjes wc",
       "cents": 18430,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "d9795512-948a-4481-92a9-3f8fbaacab43",
       "name": "Dovy-keuken",
       "cents": 900000,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     },
     {
       "id": "b256b96f-7555-4e0f-bd9f-6aa5da18d44e",
       "name": "Cbs-tegels",
       "cents": 1100000,
-      "paid": false
+      "paid": false,
+      "paidCents": 0,
+      "dueDate": "",
+      "priority": "",
+      "notes": ""
     }
-  ]
+  ],
+  "schemaVersion": 2,
+  "availableBudgetCents": 3900000
 }
