@@ -248,7 +248,7 @@
       "paid": false,
       "paidCents": 0,
       "dueDate": "2026-12-08",
-      "priority": "",
+      "priority": "high",
       "notes": ""
     },
     {
