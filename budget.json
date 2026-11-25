@@ -47,8 +47,8 @@
       "cents": 370000,
       "paid": false,
       "paidCents": 0,
-      "dueDate": "",
-      "priority": "",
+      "dueDate": "2027-01-15",
+      "priority": "high",
       "notes": ""
     },
     {
