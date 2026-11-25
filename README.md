@@ -1,1 +1,9 @@
-# Renovatie
+# Renovatiebudget
+
+1. Maak een **private** GitHub repository. Upload index.html, budget.json en README.md naar de standaardbranch.
+2. Gebruik de HTML lokaal via een lokale webserver (bijvoorbeeld `python -m http.server 8000` in de map, open http://localhost:8000), of publiceer uitsluitend index.html via een statische host. Publiceer budget.json nooit via een publieke website. GitHub Pages vanuit een private repo vereist een geschikt abonnement; Pages is doorgaans publiek. Gebruik geen Pages-publicatie van de volledige map met budget.json.
+3. Maak een fine-grained personal access token via https://github.com/settings/personal-access-tokens/new. Selecteer alleen deze repository en Contents: Read and write. Kies een beperkte vervaldatum. Geef je partner toegang via repository Settings > Collaborators. Fine-grained tokens voor repositories van andere persoonlijke accounts kunnen beperkingen hebben; gebruik zo nodig een organisatie met beide leden en goedgekeurde tokens. Gebruik geen breed classic token als standaardoplossing.
+4. Open de HTML, vul eigenaar/repository en je token in. Het token blijft alleen in het geheugen van de pagina; na refresh opnieuw invoeren. Deel het token niet en commit het nooit.
+5. Wijzigingen worden bij afvinken, toevoegen, verwijderen of verlaten van een aangepast veld als commit opgeslagen. De app haalt de actuele gegevens op voor iedere wijziging en controleert conflicten. De knop Vernieuwen haalt de laatste gegevens op; automatisch ophalen om de 20 seconden wanneer geen invoer actief is.
+
+Geen Google Login, geen offline wachtrij. Wacht op opslagbevestiging. Bij een fout controleer de actuele stand en probeer opnieuw. De data is privé zolang de repository privé blijft en het JSON-bestand niet publiek wordt gepubliceerd. De commitgeschiedenis bevat ook oude bedragen. Bescherm je tokens. Gebruik een vertrouwde, ongewijzigde kopie van de HTML. De integratie is niet live getest tegen jouw repository.

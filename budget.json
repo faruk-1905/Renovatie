@@ -1,0 +1,167 @@
+{
+  "extra": 3000000,
+  "items": [
+    {
+      "id": "0",
+      "name": "Tv",
+      "cents": 25000,
+      "paid": true
+    },
+    {
+      "id": "1",
+      "name": "Wasmachine",
+      "cents": 85400,
+      "paid": true
+    },
+    {
+      "id": "2",
+      "name": "Droogkast",
+      "cents": 62000,
+      "paid": true
+    },
+    {
+      "id": "3",
+      "name": "Diepvries",
+      "cents": 87900,
+      "paid": true
+    },
+    {
+      "id": "4",
+      "name": "Spouwmuur",
+      "cents": 370000,
+      "paid": false
+    },
+    {
+      "id": "5",
+      "name": "Kasten",
+      "cents": 500000,
+      "paid": false
+    },
+    {
+      "id": "6",
+      "name": "Douchewand",
+      "cents": 48779,
+      "paid": true
+    },
+    {
+      "id": "7",
+      "name": "Douchetegel",
+      "cents": 60000,
+      "paid": false
+    },
+    {
+      "id": "8",
+      "name": "Printer",
+      "cents": 22100,
+      "paid": false
+    },
+    {
+      "id": "9",
+      "name": "Detremerrie spiegelkast",
+      "cents": 97574,
+      "paid": true
+    },
+    {
+      "id": "10",
+      "name": "Wc pompbak",
+      "cents": 20600,
+      "paid": true
+    },
+    {
+      "id": "11",
+      "name": "Sofa",
+      "cents": 250000,
+      "paid": false
+    },
+    {
+      "id": "12",
+      "name": "Eettafel",
+      "cents": 114500,
+      "paid": true
+    },
+    {
+      "id": "13",
+      "name": "Stoelen",
+      "cents": 85500,
+      "paid": false
+    },
+    {
+      "id": "14",
+      "name": "Rolluiken",
+      "cents": 150000,
+      "paid": false
+    },
+    {
+      "id": "15",
+      "name": "Stofzuiger",
+      "cents": null,
+      "paid": false
+    },
+    {
+      "id": "16",
+      "name": "Dekbed",
+      "cents": 19000,
+      "paid": false
+    },
+    {
+      "id": "17",
+      "name": "Deuren",
+      "cents": 500000,
+      "paid": false
+    },
+    {
+      "id": "18",
+      "name": "Bureau",
+      "cents": 100000,
+      "paid": false
+    },
+    {
+      "id": "19",
+      "name": "Verf",
+      "cents": 200000,
+      "paid": false
+    },
+    {
+      "id": "20",
+      "name": "Strijkplank",
+      "cents": null,
+      "paid": false
+    },
+    {
+      "id": "21",
+      "name": "Strijkijzer",
+      "cents": null,
+      "paid": false
+    },
+    {
+      "id": "22",
+      "name": "Tv-beugel",
+      "cents": null,
+      "paid": false
+    },
+    {
+      "id": "23",
+      "name": "Tv-kast",
+      "cents": null,
+      "paid": false
+    },
+    {
+      "id": "24",
+      "name": "Kachel / open haard",
+      "cents": null,
+      "paid": false
+    },
+    {
+      "id": "25",
+      "name": "Afdekplaatjes wc",
+      "cents": 18430,
+      "paid": false
+    },
+    {
+      "id": "26",
+      "name": "Extra toner",
+      "cents": null,
+      "paid": false
+    }
+  ]
+}
