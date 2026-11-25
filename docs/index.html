@@ -5,214 +5,457 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>Renovatiebudget</title>
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Renovatie">
+<title>Onze renovatie 2.0</title>
 
 <style>
 :root {
     color-scheme: light dark;
-    --bg: #f2f4f7;
+    --bg: #f2f2f7;
     --card: #ffffff;
-    --ink: #17252d;
-    --muted: #53636e;
-    --line: #d5dce2;
-    --accent: #176b54;
-    --soft: #e5f2ec;
+    --text: #1c1c1e;
+    --muted: #73737d;
+    --line: #e5e5ea;
+    --accent: #168568;
+    --soft: #e8f5ef;
+    --red: #d63838;
+    --orange: #bd790b;
+    --input: #f2f2f7;
+    --nav: rgba(255,255,255,.96);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --bg: #111619;
-        --card: #20282d;
-        --ink: #edf2f5;
-        --muted: #aebcc5;
-        --line: #43515a;
-        --accent: #8bd9b7;
-        --soft: #263d35;
+        --bg: #000000;
+        --card: #1c1c1e;
+        --text: #f5f5f7;
+        --muted: #a1a1aa;
+        --line: #38383a;
+        --accent: #65d6ad;
+        --soft: #19382f;
+        --red: #ff6969;
+        --orange: #ffbd59;
+        --input: #2c2c2e;
+        --nav: rgba(28,28,30,.96);
     }
 }
 
 * {
     box-sizing: border-box;
-}
-
-body {
-    font: 16px system-ui, -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--ink);
-    max-width: 800px;
-    margin: auto;
-    padding:
-        max(16px, env(safe-area-inset-top))
-        max(12px, env(safe-area-inset-right))
-        calc(150px + env(safe-area-inset-bottom))
-        max(12px, env(safe-area-inset-left));
-}
-
-section {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 18px;
-    padding: 16px;
-    margin: 12px 0;
-}
-
-input, button, select {
-    font: inherit;
-    min-width: 0;
-    min-height: 44px;
-    padding: 9px;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    color: var(--ink);
-    background: var(--card);
-}
-
-button {
-    cursor: pointer;
-    background: var(--soft);
-    font-weight: 600;
-    touch-action: manipulation;
-}
-
-button:disabled {
-    opacity: .5;
-}
-
-label {
-    display: block;
-    margin: 8px 0;
-}
-
-#login input {
-    display: block;
-    width: 100%;
-    margin-top: 6px;
-}
-
-#connect {
-    width: 100%;
-}
-
-.item {
-    display: grid;
-    grid-template-columns: 44px minmax(0, 1fr) 90px 44px;
-    gap: 5px;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--line);
-}
-
-.item input {
-    width: 100%;
-}
-
-.item input[type="checkbox"] {
-    width: 28px;
-    height: 28px;
-    min-height: 0;
-    margin: 8px;
-    accent-color: var(--accent);
-}
-
-.item input:not([type="checkbox"]) {
-    padding: 7px 5px;
-}
-
-.item:has(input:checked) input:not([type="checkbox"]) {
-    color: var(--muted);
-    text-decoration: line-through;
-}
-
-.item button {
-    color: #b94d4d;
-    font-size: 22px;
-    padding: 0;
-}
-
-h1 {
-    font-size: 27px;
-    margin: 8px 0 16px;
-}
-
-small {
-    color: var(--muted);
-}
-
-#status {
-    white-space: pre-wrap;
-    color: var(--muted);
-    overflow-wrap: anywhere;
-}
-
-.sum {
-    font-size: clamp(23px, 6vw, 32px);
-    font-weight: 750;
-    font-variant-numeric: tabular-nums;
-    color: var(--accent);
+    -webkit-tap-highlight-color: transparent;
 }
 
 [hidden] {
     display: none !important;
 }
 
-#add {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 100px;
-    gap: 8px;
-    margin-top: 16px;
+body {
+    margin: auto;
+    max-width: 850px;
+    padding: max(18px, env(safe-area-inset-top))
+             max(16px, env(safe-area-inset-right))
+             calc(170px + env(safe-area-inset-bottom))
+             max(16px, env(safe-area-inset-left));
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont,
+                 "Segoe UI", sans-serif;
+    font-size: 16px;
 }
 
-#add button {
-    grid-column: 1 / -1;
+h1 {
+    font-size: 28px;
+    letter-spacing: -1px;
+    margin: 8px 0;
 }
 
-#extra {
-    width: 130px;
-    max-width: 100%;
+h2 {
+    font-size: 20px;
+    letter-spacing: -.4px;
+    margin: 0 0 16px;
 }
 
-#totals p {
+h3 {
+    font-size: 16px;
+    margin: 0 0 10px;
+}
+
+p {
+    line-height: 1.5;
+}
+
+small, .muted {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 18px;
+    margin: 14px 0;
+}
+
+.hero {
+    background: var(--soft);
+}
+
+.big {
+    font-size: clamp(30px, 8vw, 42px);
+    font-weight: 750;
+    letter-spacing: -1.5px;
+    font-variant-numeric: tabular-nums;
     overflow-wrap: anywhere;
 }
 
-#dock {
+.value {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -.6px;
+    font-variant-numeric: tabular-nums;
+    overflow-wrap: anywhere;
+}
+
+.green {
+    color: var(--accent);
+}
+
+.red {
+    color: var(--red);
+}
+
+.orange {
+    color: var(--orange);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 18px 12px;
+}
+
+.metric small {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.flex {
+    flex: 1;
+    min-width: 0;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+    margin: 16px 0;
+}
+
+input, select, textarea, button {
+    font: inherit;
+    color: var(--text);
+    min-height: 44px;
+    border: 0;
+    border-radius: 12px;
+}
+
+input, select, textarea {
+    width: 100%;
+    background: var(--input);
+    padding: 12px;
+    min-width: 0;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+input[type="date"] {
+    display: block;
+    max-width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+input[type="checkbox"] {
+    width: 26px;
+    height: 26px;
+    min-height: 26px;
+    flex-shrink: 0;
+    accent-color: var(--accent);
+}
+
+button {
+    background: var(--input);
+    padding: 12px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    touch-action: manipulation;
+}
+
+button.primary {
+    background: var(--accent);
+    color: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+    button.primary {
+        color: #10251e;
+    }
+}
+
+button.danger {
+    color: var(--red);
+}
+
+button:disabled {
+    opacity: .45;
+}
+
+.full {
+    width: 100%;
+}
+
+label {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    margin: 14px 0 6px;
+}
+
+.progress {
+    background: var(--line);
+    border-radius: 20px;
+    height: 8px;
+    overflow: hidden;
+    display: flex;
+    margin: 12px 0;
+}
+
+.progress span {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+}
+
+.item {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.item:last-child {
+    border-bottom: 0;
+}
+
+.item-name {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.item-price {
+    text-align: right;
+    font-weight: 700;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.item-meta {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.6;
+}
+
+.item-details {
+    padding: 14px;
+    margin-top: 12px;
+    border-radius: 15px;
+    background: var(--bg);
+}
+
+.paid-name {
+    text-decoration: line-through;
+    color: var(--muted);
+}
+
+.priority {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 650;
+    margin-top: 4px;
+    margin-right: 6px;
+}
+
+.priority-high {
+    color: var(--red);
+}
+
+.priority-medium {
+    color: var(--orange);
+}
+
+.priority-low {
+    color: var(--muted);
+}
+
+.filters {
+    display: flex;
+    gap: 6px;
+    margin: 14px 0;
+}
+
+.filters button {
+    flex: 1;
+    font-size: 13px;
+    padding: 10px 5px;
+}
+
+.filters button.active {
+    background: var(--soft);
+    color: var(--accent);
+}
+
+.icon-button {
+    background: transparent;
+    min-width: 40px;
+    padding: 8px;
+    font-size: 20px;
+    color: var(--muted);
+}
+
+.plan-row {
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.plan-row:last-child {
+    border-bottom: 0;
+}
+
+#status {
+    font-size: 12px;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+    margin: 8px 0 14px;
+}
+
+#status.error {
+    color: var(--red);
+}
+
+#bottom {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    background: var(--card);
+    z-index: 50;
+    background: var(--nav);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
     border-top: 1px solid var(--line);
-    padding:
-        10px
-        max(16px, env(safe-area-inset-right))
-        calc(10px + env(safe-area-inset-bottom))
-        max(16px, env(safe-area-inset-left));
-    z-index: 5;
+    padding: 10px 16px
+             calc(8px + env(safe-area-inset-bottom));
 }
 
-#dock > div {
-    max-width: 768px;
+.bottom-inner {
+    max-width: 818px;
     margin: auto;
 }
 
-#dockstatus {
-    display: block;
-    font-size: 12px;
-    overflow-wrap: anywhere;
+.bottom-total {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
 }
 
-#dock .sum {
-    line-height: 1.2;
+.bottom-total strong {
+    display: block;
+    font-size: 19px;
+    font-variant-numeric: tabular-nums;
+}
+
+nav {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 4px;
+    padding-top: 5px;
+}
+
+nav button {
+    background: transparent;
+    color: var(--muted);
+    padding: 5px 0;
+    font-size: 10px;
+    font-weight: 600;
+}
+
+nav button.active {
+    color: var(--accent);
+}
+
+nav svg {
+    display: block;
+    margin: 0 auto 4px;
+    width: 23px;
+    height: 23px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.notice {
+    background: var(--input);
+    border-radius: 12px;
+    padding: 12px;
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+}
+
+#toast {
+    position: fixed;
+    top: max(15px, env(safe-area-inset-top));
+    left: 16px;
+    right: 16px;
+    max-width: 600px;
+    margin: auto;
+    padding: 15px;
+    border-radius: 14px;
+    background: var(--card);
+    color: var(--text);
+    box-shadow: 0 5px 30px #0003;
+    z-index: 100;
+    font-size: 14px;
 }
 
 @media (max-width: 380px) {
-    section {
-        padding: 10px;
+    body {
+        padding-left: 10px;
+        padding-right: 10px;
     }
 
-    .item {
-        grid-template-columns: 40px minmax(0, 1fr) 78px 44px;
-        gap: 3px;
+    .card {
+        padding: 13px;
+    }
+
+    .value {
+        font-size: 19px;
+    }
+
+    .row {
+        gap: 7px;
     }
 }
 </style>
@@ -220,156 +463,655 @@ small {
 
 <body>
 
-<h1>🏠 Renovatiebudget</h1>
+<header>
+    <h1>🏠 Onze renovatie</h1>
+    <small>Renovatie Dashboard 2.0</small>
+    <div id="status" role="status">Niet verbonden</div>
+</header>
 
-<section id="login">
+<section id="login" class="card">
+    <h2>Verbinden met GitHub</h2>
 
-    <label>
-        GitHub repository
-        <input
-            id="repo"
-            placeholder="gebruikersnaam/renovatiebudget"
-            autocapitalize="none"
-            autocorrect="off"
-            spellcheck="false"
-        >
-    </label>
+    <label>Repository</label>
+    <input id="repo"
+           placeholder="gebruikersnaam/Renovatie"
+           autocapitalize="none"
+           autocorrect="off"
+           spellcheck="false">
 
-    <label>
-        GitHub toegangstoken
-        <input
-            id="token"
-            type="password"
-            autocomplete="off"
-        >
-    </label>
+    <label>Toegangstoken</label>
+    <input id="token"
+           type="password"
+           autocomplete="off"
+           placeholder="GitHub Personal Access Token">
 
-    <button id="connect">Verbinden</button>
+    <br><br>
 
+    <button id="connect" class="primary full">
+        Verbinden
+    </button>
+
+    <p class="muted">
+        Je token wordt niet opgeslagen in GitHub
+        of in de HTML-broncode.
+    </p>
 </section>
-
-<p id="status" role="status">Niet verbonden</p>
 
 <main id="app" hidden>
 
-    <section>
-        <button id="logout">Uitloggen</button>
-        <button id="reload">Vernieuwen</button>
+    <!-- OVERZICHT -->
 
-        <p>Nog te betalen inclusief extra</p>
-        <div class="sum" id="top"></div>
+    <section id="page-overview" class="page">
+
+        <div class="card hero">
+            <small>Totaal nog te betalen</small>
+            <div id="overview-total" class="big"></div>
+
+            <hr>
+
+            <div class="grid">
+                <div class="metric">
+                    <small>Nu nodig</small>
+                    <div id="overview-now" class="value"></div>
+                </div>
+
+                <div class="metric">
+                    <small>Later nodig</small>
+                    <div id="overview-later" class="value"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Financieel overzicht</h2>
+
+            <div class="grid">
+                <div class="metric">
+                    <small>Reeds betaald</small>
+                    <div id="overview-paid" class="value green"></div>
+                </div>
+
+                <div class="metric">
+                    <small>Totale projectkosten</small>
+                    <div id="overview-project" class="value"></div>
+                </div>
+
+                <div class="metric">
+                    <small>Beschikbaar budget</small>
+                    <div id="overview-budget" class="value"></div>
+                </div>
+
+                <div class="metric">
+                    <small>Resterende buffer</small>
+                    <div id="overview-buffer" class="value"></div>
+                </div>
+            </div>
+
+            <div id="budget-progress" class="progress"></div>
+            <small id="budget-caption"></small>
+
+            <hr>
+
+            <button class="full" data-tab="settings">
+                Beschikbaar budget aanpassen
+            </button>
+        </div>
+
+        <div class="card">
+            <h2>Voortgang</h2>
+
+            <div class="row">
+                <small id="progress-caption"></small>
+                <strong id="progress-percent"></strong>
+            </div>
+
+            <div class="progress">
+                <span id="progress-bar"></span>
+            </div>
+
+            <div id="unknown-caption" class="muted"></div>
+        </div>
+
+        <div class="card">
+            <h2>Openstaand per prioriteit</h2>
+            <div id="priority-summary"></div>
+        </div>
+
+        <div class="card">
+            <h2>Volgende betaling</h2>
+            <div id="next-payment"></div>
+
+            <br>
+
+            <button class="full" data-tab="planning">
+                Bekijk betalingsplanning
+            </button>
+        </div>
+
     </section>
 
-    <section>
-        <label>
-            Filter
-            <select id="filter">
-                <option value="all">Alles</option>
-                <option value="open">Openstaand</option>
-                <option value="paid">Betaald</option>
+    <!-- AANKOPEN -->
+
+    <section id="page-items" class="page" hidden>
+
+        <div class="card">
+            <div class="row">
+                <h2 style="margin:0">Aankopen</h2>
+
+                <button id="show-add" class="primary">
+                    + Nieuw
+                </button>
+            </div>
+
+            <br>
+
+            <input id="search"
+                   type="search"
+                   placeholder="Zoek een aankoop…">
+
+            <div class="filters" id="filters">
+                <button data-filter="open" class="active">
+                    Openstaand
+                </button>
+
+                <button data-filter="paid">
+                    Betaald
+                </button>
+
+                <button data-filter="all">
+                    Alles
+                </button>
+            </div>
+
+            <label>Sorteren op</label>
+            <select id="sort">
+                <option value="default">Oorspronkelijke volgorde</option>
+                <option value="priority">Prioriteit</option>
+                <option value="amount">Hoogste openstaande bedrag</option>
+                <option value="date">Betaaldatum</option>
+                <option value="name">Naam A-Z</option>
             </select>
-        </label>
 
-        <div id="rows"></div>
+            <div id="items"></div>
+        </div>
 
-        <form id="add">
-            <input
-                id="name"
-                placeholder="Nieuwe aankoop"
-                required
-            >
+        <div id="add-card" class="card" hidden>
+            <h2>Nieuwe aankoop</h2>
 
-            <input
-                id="amount"
-                placeholder="Bedrag (€)"
-                inputmode="decimal"
-            >
+            <form id="add-form">
+                <label>Omschrijving</label>
+                <input id="new-name" required>
 
-            <button type="submit">＋ Toevoegen</button>
-        </form>
+                <label>Totaalbedrag (€)</label>
+                <input id="new-amount"
+                       inputmode="decimal"
+                       placeholder="Optioneel">
+
+                <label>Prioriteit</label>
+                <select id="new-priority">
+                    <option value="">Geen prioriteit</option>
+                    <option value="high">Noodzakelijk</option>
+                    <option value="medium">Gewenst</option>
+                    <option value="low">Uitstelbaar</option>
+                </select>
+
+                <label>Toekomstige betaaldatum</label>
+                <input id="new-date" type="date">
+
+                <small>
+                    Laat leeg wanneer het geld nu nodig is.
+                </small>
+
+                <label>Notities</label>
+                <textarea id="new-notes"
+                          placeholder="Leverancier, afspraken…"></textarea>
+
+                <br><br>
+
+                <button type="submit" class="primary full">
+                    Aankoop toevoegen
+                </button>
+
+                <br><br>
+
+                <button type="button"
+                        id="cancel-add"
+                        class="full">
+                    Annuleren
+                </button>
+            </form>
+        </div>
+
     </section>
 
-    <section>
-        <label>
-            Extra renovatiekosten (€)
-            <input id="extra" inputmode="decimal">
-        </label>
+    <!-- PLANNING -->
 
-        <div id="totals"></div>
+    <section id="page-planning" class="page" hidden>
 
-        <button id="backup">Back-up downloaden</button>
+        <div class="card hero">
+            <div class="grid">
+                <div class="metric">
+                    <small>Nu nodig</small>
+                    <div id="planning-now" class="value"></div>
+                </div>
+
+                <div class="metric">
+                    <small>Later nodig</small>
+                    <div id="planning-later" class="value"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Betalingsplanning</h2>
+            <div id="planning-list"></div>
+        </div>
+
+        <div class="card">
+            <h2>Uitgaven verplaatsen</h2>
+
+            <p class="muted">
+                Zonder toekomstige datum wordt een
+                openstaande uitgave automatisch
+                bij 'Nu nodig' gerekend.
+            </p>
+
+            <div id="planning-edit"></div>
+        </div>
+
+    </section>
+
+    <!-- INSTELLINGEN -->
+
+    <section id="page-settings" class="page" hidden>
+
+        <div class="card">
+            <h2>Budgetinstellingen</h2>
+
+            <label>Momenteel beschikbaar budget (€)</label>
+            <input id="available-budget"
+                   inputmode="decimal"
+                   placeholder="Nog niet ingesteld">
+
+            <p class="muted">
+                Het geld dat jullie momenteel nog
+                beschikbaar hebben voor de renovatie.
+                Pas dit aan wanneer er geld bijkomt
+                of wanneer een betaling is uitgevoerd.
+            </p>
+
+            <label>Extra renovatiekosten (€)</label>
+            <input id="extra-budget" inputmode="decimal">
+
+            <p class="muted">
+                Deze kosten worden standaard bij
+                'Nu nodig' gerekend.
+            </p>
+
+            <button id="save-settings" class="primary full">
+                Instellingen opslaan
+            </button>
+        </div>
+
+        <div class="card">
+            <h2>Synchronisatie</h2>
+
+            <div class="row">
+                <small>Repository</small>
+                <strong id="repo-label"
+                        style="overflow-wrap:anywhere"></strong>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <small>Automatische synchronisatie</small>
+                <strong class="green">20 sec.</strong>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <small>Laatste synchronisatie</small>
+                <small id="last-sync">—</small>
+            </div>
+
+            <br>
+
+            <button id="reload" class="full">
+                Nu synchroniseren
+            </button>
+        </div>
+
+        <div class="card">
+            <h2>Gegevens</h2>
+
+            <button id="backup" class="full">
+                JSON-back-up downloaden
+            </button>
+
+            <br><br>
+
+            <button id="logout" class="danger full">
+                Uitloggen
+            </button>
+        </div>
+
+        <div class="notice">
+            Dashboard 2.0<br>
+            Automatische dark mode<br>
+            GitHub Pages<br>
+            Gegevens opgeslagen in budget.json
+        </div>
+
     </section>
 
 </main>
 
-<footer id="dock" hidden>
-    <div>
-        <small>Nog te betalen inclusief extra</small>
-        <div class="sum" id="docktotal"></div>
-        <small id="dockstatus" role="status"></small>
+<!-- VASTE ONDERBALK -->
+
+<footer id="bottom" hidden>
+    <div class="bottom-inner">
+
+        <div class="bottom-total">
+            <div>
+                <small>Nog te betalen</small>
+                <strong id="footer-total"></strong>
+            </div>
+
+            <div style="text-align:right">
+                <small>Resterende buffer</small>
+                <strong id="footer-buffer"></strong>
+            </div>
+        </div>
+
+        <nav>
+
+            <button data-tab="overview" class="active">
+                <svg viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7" rx="1"/>
+                    <rect x="14" y="3" width="7" height="7" rx="1"/>
+                    <rect x="3" y="14" width="7" height="7" rx="1"/>
+                    <rect x="14" y="14" width="7" height="7" rx="1"/>
+                </svg>
+                Overzicht
+            </button>
+
+            <button data-tab="items">
+                <svg viewBox="0 0 24 24">
+                    <path d="m3 6 2 2 4-4"/>
+                    <path d="M12 6h9"/>
+                    <path d="m3 13 2 2 4-4"/>
+                    <path d="M12 13h9"/>
+                    <path d="m3 20 2 2 4-4"/>
+                    <path d="M12 20h9"/>
+                </svg>
+                Aankopen
+            </button>
+
+            <button data-tab="planning">
+                <svg viewBox="0 0 24 24">
+                    <rect x="3" y="5" width="18" height="16" rx="2"/>
+                    <path d="M16 3v4M8 3v4M3 10h18"/>
+                    <path d="M8 15h2M14 15h2"/>
+                </svg>
+                Planning
+            </button>
+
+            <button data-tab="settings">
+                <svg viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3"/>
+                    <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+                    <path d="m5 5 2 2m10 10 2 2M5 19l2-2M17 7l2-2"/>
+                    <circle cx="12" cy="12" r="7"/>
+                </svg>
+                Instellingen
+            </button>
+
+        </nav>
     </div>
 </footer>
+
+<div id="toast" role="status" hidden></div>
 
 <script>
 "use strict";
 
+/* =====================================
+   BASISINSTELLINGEN
+===================================== */
+
 const $ = id => document.getElementById(id);
 
-const money = n => n.toLocaleString("nl-BE", {
-    style: "currency",
-    currency: "EUR"
-});
+const PRIORITIES = {
+    high: "Noodzakelijk",
+    medium: "Gewenst",
+    low: "Uitstelbaar",
+    "": "Geen prioriteit"
+};
 
-let data;
-let sha;
-let repo;
-let token;
+const PRIORITY_ORDER = {
+    high: 0,
+    medium: 1,
+    low: 2,
+    "": 3
+};
+
+let data = null;
+let sha = null;
+let repo = "";
+let token = "";
 let busy = false;
 let loading = false;
+let activeTab = "overview";
+let filter = "open";
+let expanded = null;
+let toastTimer;
+let settingsDirty = false;
 
-function status(message) {
-    $("status").textContent = message;
-    $("dockstatus").textContent = message;
+const money = cents =>
+    (cents / 100).toLocaleString("nl-BE", {
+        style: "currency",
+        currency: "EUR"
+    });
+
+function today() {
+    return new Date().toLocaleDateString("sv-SE", {
+        timeZone: "Europe/Brussels"
+    });
 }
 
-function cents(value) {
-    if (!String(value).trim()) return null;
+function dateLabel(date) {
+    if (!date) return "Nu nodig";
 
-    const n = Number(String(value).replace(",", "."));
+    return new Date(date + "T12:00:00")
+        .toLocaleDateString("nl-BE");
+}
 
-    if (!Number.isFinite(n) || n < 0 || n > 1e9) {
-        throw new Error("Ongeldig bedrag");
+function monthLabel(month) {
+    return new Date(month + "-15T12:00:00")
+        .toLocaleDateString("nl-BE", {
+            month: "long",
+            year: "numeric"
+        });
+}
+
+function parseCents(value, allowEmpty = false) {
+    const text = String(value).trim().replace(",", ".");
+
+    if (!text && allowEmpty) return null;
+    if (!text) return 0;
+
+    if (!/^\d+(\.\d{1,2})?$/.test(text)) {
+        throw new Error("Vul een geldig bedrag in.");
     }
 
-    return Math.round(n * 100);
+    const amount = Number(text);
+
+    if (!Number.isFinite(amount) || amount > 1e9) {
+        throw new Error("Ongeldig bedrag.");
+    }
+
+    return Math.round(amount * 100);
 }
 
-const val = n => n === null ? "" : String(n / 100);
+function inputValue(cents) {
+    return cents == null ? "" : String(cents / 100);
+}
 
-function enc(object) {
-    return btoa(
-        Array.from(
-            new TextEncoder().encode(
-                JSON.stringify(object, null, 2)
-            ),
-            b => String.fromCharCode(b)
-        ).join("")
+function remaining(item) {
+    if (item.paid) return 0;
+
+    return Math.max(
+        0,
+        (item.cents || 0) - (item.paidCents || 0)
     );
 }
 
-function dec(content) {
+function isFuture(item) {
+    return Boolean(
+        item.dueDate && item.dueDate > today()
+    );
+}
+
+function setStatus(text, error = false) {
+    $("status").textContent = text;
+    $("status").classList.toggle("error", error);
+}
+
+function notify(text) {
+    clearTimeout(toastTimer);
+
+    $("toast").textContent = text;
+    $("toast").hidden = false;
+
+    toastTimer = setTimeout(() => {
+        $("toast").hidden = true;
+    }, 3500);
+}
+
+function node(tag, text = "", className = "") {
+    const element = document.createElement(tag);
+    element.textContent = text;
+
+    if (className) element.className = className;
+
+    return element;
+}
+
+/* =====================================
+   AUTOMATISCHE MIGRATIE V1 NAAR V2
+===================================== */
+
+function normalize(raw) {
+    if (!raw || !Array.isArray(raw.items)) {
+        throw new Error("Ongeldige structuur van budget.json");
+    }
+
+    const validCents = value =>
+        Number.isSafeInteger(value) && value >= 0;
+
+    const ids = new Set();
+
+    const items = raw.items.map(item => {
+        if (!item || typeof item.name !== "string") {
+            throw new Error("Ongeldige aankoop in budget.json");
+        }
+
+        const id = String(item.id ?? "");
+
+        if (!id || ids.has(id)) {
+            throw new Error("Ontbrekende of dubbele aankoop-ID.");
+        }
+
+        ids.add(id);
+
+        if (item.cents != null && !validCents(item.cents)) {
+            throw new Error("Ongeldig bedrag bij " + item.name);
+        }
+
+        const cents = item.cents ?? null;
+
+        let paidCents = validCents(item.paidCents)
+            ? item.paidCents
+            : item.paid ? (cents || 0) : 0;
+
+        if (item.paid && cents !== null) {
+            paidCents = cents;
+        }
+
+        if (cents !== null) {
+            paidCents = Math.min(cents, paidCents);
+        }
+
+        const paid = Boolean(item.paid) ||
+            (cents !== null && paidCents >= cents);
+
+        const priority = Object.hasOwn(
+            PRIORITIES, item.priority
+        ) ? item.priority : "";
+
+        const dueDate =
+            typeof item.dueDate === "string" &&
+            /^\d{4}-\d{2}-\d{2}$/.test(item.dueDate)
+                ? item.dueDate : "";
+
+        return {
+            ...item,
+            id,
+            name: item.name,
+            cents,
+            paid,
+            paidCents,
+            dueDate,
+            priority,
+            notes: typeof item.notes === "string"
+                ? item.notes : ""
+        };
+    });
+
+    return {
+        ...raw,
+        schemaVersion: 2,
+        availableBudgetCents:
+            validCents(raw.availableBudgetCents)
+                ? raw.availableBudgetCents : null,
+        extra: validCents(raw.extra)
+            ? raw.extra : 3000000,
+        items
+    };
+}
+
+/* =====================================
+   GITHUB API
+===================================== */
+
+function encodeJSON(object) {
+    const bytes = new TextEncoder().encode(
+        JSON.stringify(object, null, 2)
+    );
+
+    let binary = "";
+
+    for (const byte of bytes) {
+        binary += String.fromCharCode(byte);
+    }
+
+    return btoa(binary);
+}
+
+function decodeJSON(content) {
+    const bytes = Uint8Array.from(
+        atob(content),
+        character => character.charCodeAt(0)
+    );
+
     return JSON.parse(
-        new TextDecoder().decode(
-            Uint8Array.from(
-                atob(content),
-                c => c.charCodeAt(0)
-            )
-        )
+        new TextDecoder().decode(bytes)
     );
 }
 
-async function api(method = "GET", body) {
-
+async function api(method = "GET", body = null) {
     const url =
         "https://api.github.com/repos/" +
         repo.split("/").map(encodeURIComponent).join("/") +
@@ -381,7 +1123,8 @@ async function api(method = "GET", body) {
         headers: {
             Authorization: "Bearer " + token,
             Accept: "application/vnd.github+json",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "X-GitHub-Api-Version": "2022-11-28"
         },
         ...(body ? {
             body: JSON.stringify(body)
@@ -389,9 +1132,19 @@ async function api(method = "GET", body) {
     });
 
     if (!response.ok) {
+        const messages = {
+            401: "Token ongeldig of verlopen.",
+            403: "Geen toegang of onvoldoende rechten.",
+            404: "Repository of budget.json niet gevonden.",
+            409: "Gelijktijdige wijziging gedetecteerd.",
+            422: "GitHub heeft de wijziging geweigerd."
+        };
+
         const error = new Error(
-            "GitHub: " + response.status
+            messages[response.status] ||
+            "GitHub-fout " + response.status
         );
+
         error.code = response.status;
         throw error;
     }
@@ -399,214 +1152,69 @@ async function api(method = "GET", body) {
     return response.json();
 }
 
+function markSynced() {
+    $("last-sync").textContent =
+        new Date().toLocaleTimeString("nl-BE");
+
+    setStatus("● Online · gesynchroniseerd");
+}
+
 async function load() {
     const result = await api();
 
-    data = dec(result.content);
+    data = normalize(decodeJSON(result.content));
     sha = result.sha;
 
-    render();
-
-    status("Online • laatste versie geladen");
+    markSynced();
+    renderAll();
 }
 
-function render() {
-
-    const paid = data.items.reduce(
-        (sum, item) =>
-            sum + (item.paid ? (item.cents || 0) : 0),
-        0
-    );
-
-    const total = data.items.reduce(
-        (sum, item) => sum + (item.cents || 0),
-        0
-    );
-
-    const open = total - paid;
-    const extra = data.extra || 0;
-
-    $("top").textContent = money((open + extra) / 100);
-    $("docktotal").textContent = $("top").textContent;
-    $("extra").value = val(extra);
-
-    $("totals").replaceChildren();
-
-    const overview = [
-        ["Alle aankopen", total],
-        ["Reeds betaald", paid],
-        ["Openstaande aankopen", open],
-        ["Extra renovatiekosten", extra],
-        ["Totale projectkosten", total + extra],
-        ["TOTAAL NOG TE BETALEN", open + extra]
-    ];
-
-    for (const [label, amount] of overview) {
-
-        const p = document.createElement("p");
-
-        p.textContent = label + ": " + money(amount / 100);
-
-        if (label.startsWith("TOTAAL")) {
-            p.className = "sum";
-        }
-
-        $("totals").append(p);
-    }
-
-    const unknown = data.items.filter(
-        item => !item.paid && item.cents === null
-    ).length;
-
-    const note = document.createElement("small");
-    note.textContent = unknown + " openstaande items zonder prijs";
-
-    $("totals").append(note);
-    $("rows").replaceChildren();
-
-    const filter = $("filter").value;
-
-    const filtered = data.items.filter(
-        item =>
-            filter === "all" ||
-            (filter === "paid" ? item.paid : !item.paid)
-    );
-
-    for (const item of filtered) {
-
-        const row = document.createElement("div");
-        row.className = "item";
-
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.checked = item.paid;
-        checkbox.setAttribute(
-            "aria-label",
-            "Betaald: " + item.name
-        );
-
-        checkbox.onchange = () =>
-            edit(item.id, "paid", checkbox.checked);
-
-        const name = document.createElement("input");
-        name.value = item.name;
-        name.setAttribute("aria-label", "Omschrijving");
-
-        name.onchange = () =>
-            edit(item.id, "name", name.value.trim());
-
-        const amount = document.createElement("input");
-        amount.value = val(item.cents);
-        amount.placeholder = "Onbekend";
-        amount.inputMode = "decimal";
-        amount.setAttribute("aria-label", "Bedrag");
-
-        amount.onchange = () => {
-            try {
-                edit(item.id, "cents", cents(amount.value));
-            } catch (error) {
-                status(error.message);
-                render();
-            }
-        };
-
-        const remove = document.createElement("button");
-        remove.textContent = "×";
-
-        remove.setAttribute(
-            "aria-label",
-            "Verwijder " + item.name
-        );
-
-        remove.onclick = () => {
-
-            if (!confirm(item.name + " verwijderen?")) return;
-
-            save("Aankoop verwijderd", d => {
-
-                const current = d.items.find(
-                    x => x.id === item.id
-                );
-
-                if (
-                    JSON.stringify(current) !==
-                    JSON.stringify(item)
-                ) {
-                    throw new Error("Item intussen gewijzigd");
-                }
-
-                d.items = d.items.filter(
-                    x => x.id !== item.id
-                );
-            });
-        };
-
-        row.append(checkbox, name, amount, remove);
-        $("rows").append(row);
-    }
-}
-
-function edit(id, key, value) {
-
-    const old = data.items.find(
-        item => item.id === id
-    )[key];
-
-    if (old === value) return;
-
-    if (key === "name" && !value) {
-        render();
-        return;
-    }
-
-    save("Aankoop bijgewerkt", d => {
-
-        const item = d.items.find(x => x.id === id);
-
-        if (!item || item[key] !== old) {
-            throw new Error(
-                "Dezelfde waarde is intussen gewijzigd. Probeer opnieuw."
-            );
-        }
-
-        item[key] = value;
-    });
-}
+/* =====================================
+   VEILIGE AUTOMATISCHE OPSLAG
+===================================== */
 
 async function save(message, mutate) {
-
-    if (busy) return;
+    if (busy || loading) {
+        notify("Even wachten op synchronisatie.");
+        return false;
+    }
 
     busy = true;
     $("app").inert = true;
+    $("bottom").inert = true;
 
-    status("⏳ Bezig met opslaan…");
+    setStatus("⏳ Wijzigingen opslaan…");
 
     try {
-
         for (let attempt = 0; attempt < 3; attempt++) {
 
             const result = await api();
-            const latest = dec(result.content);
+            const latest = normalize(
+                decodeJSON(result.content)
+            );
 
             mutate(latest);
 
-            try {
+            const updated = normalize(latest);
 
-                await api("PUT", {
-                    message,
-                    content: enc(latest),
+            try {
+                const committed = await api("PUT", {
+                    message: "Renovatie: " + message,
+                    content: encodeJSON(updated),
                     sha: result.sha
                 });
 
-                await load();
+                data = updated;
+                sha = committed.content.sha;
 
-                status("✓ Alle wijzigingen opgeslagen");
+                markSynced();
+                renderAll();
 
-                return;
+                notify("✓ Opgeslagen op GitHub");
+
+                return true;
 
             } catch (error) {
-
                 if (error.code !== 409 || attempt === 2) {
                     throw error;
                 }
@@ -614,160 +1222,1248 @@ async function save(message, mutate) {
         }
 
     } catch (error) {
-
-        try {
-            await load();
-        } catch {}
-
-        status(
-            "⚠ Opslag niet bevestigd: " +
-            error.message +
-            " — controleer en probeer opnieuw."
+        setStatus(
+            "⚠ Niet opgeslagen: " + error.message,
+            true
         );
 
-    } finally {
+        notify(error.message);
 
+        return false;
+
+    } finally {
         busy = false;
         $("app").inert = false;
-        render();
+        $("bottom").inert = false;
+    }
+
+    return false;
+}
+
+async function updateItem(id, patch, message) {
+    const original = data.items.find(
+        item => item.id === id
+    );
+
+    if (!original) return false;
+
+    const keys = Object.keys(patch);
+
+    if (keys.every(key => original[key] === patch[key])) {
+        return true;
+    }
+
+    return save(message, latest => {
+        const item = latest.items.find(
+            item => item.id === id
+        );
+
+        if (!item) {
+            throw new Error("Deze aankoop werd verwijderd.");
+        }
+
+        for (const key of keys) {
+            if (item[key] !== original[key]) {
+                throw new Error(
+                    "Deze aankoop werd intussen aangepast. " +
+                    "Synchroniseer en probeer opnieuw."
+                );
+            }
+        }
+
+        if (
+            keys.some(key =>
+                ["cents", "paid", "paidCents"].includes(key)
+            ) &&
+            ["cents", "paid", "paidCents"].some(
+                key => item[key] !== original[key]
+            )
+        ) {
+            throw new Error(
+                "De betalingsgegevens zijn intussen gewijzigd."
+            );
+        }
+
+        Object.assign(item, patch);
+    });
+}
+
+/* =====================================
+   BEREKENINGEN
+===================================== */
+
+function totals() {
+    const paid = data.items.reduce(
+        (sum, item) => sum + item.paidCents, 0
+    );
+
+    const purchases = data.items.reduce(
+        (sum, item) => sum + remaining(item), 0
+    );
+
+    const future = data.items
+        .filter(item =>
+            !item.paid &&
+            isFuture(item) &&
+            remaining(item) > 0
+        )
+        .sort((a, b) =>
+            a.dueDate.localeCompare(b.dueDate)
+        );
+
+    const later = future.reduce(
+        (sum, item) => sum + remaining(item), 0
+    );
+
+    const total = purchases + data.extra;
+    const now = total - later;
+    const budget = data.availableBudgetCents;
+
+    return {
+        paid,
+        total,
+        now,
+        later,
+        budget,
+        future,
+        project: paid + total,
+        buffer: budget === null ? null : budget - total,
+        unknown: data.items.filter(
+            item => !item.paid && item.cents === null
+        ).length
+    };
+}
+
+/* =====================================
+   NAVIGATIE
+===================================== */
+
+function switchTab(tab) {
+    if (busy) return;
+
+    if (
+        activeTab === "settings" &&
+        tab !== "settings" &&
+        settingsDirty &&
+        !confirm("Niet-opgeslagen instellingen verlaten?")
+    ) {
+        return;
+    }
+
+    if (tab !== activeTab) {
+        settingsDirty = false;
+        expanded = null;
+    }
+
+    activeTab = tab;
+
+    document.querySelectorAll(".page").forEach(page => {
+        page.hidden = page.id !== "page-" + tab;
+    });
+
+    document.querySelectorAll("nav button").forEach(button => {
+        button.classList.toggle(
+            "active",
+            button.dataset.tab === tab
+        );
+    });
+
+    renderAll();
+    window.scrollTo(0, 0);
+}
+
+document.querySelectorAll("[data-tab]").forEach(button => {
+    button.onclick = () => switchTab(button.dataset.tab);
+});
+
+/* =====================================
+   OVERZICHT
+===================================== */
+
+function renderOverview() {
+    const t = totals();
+
+    $("overview-total").textContent = money(t.total);
+    $("overview-now").textContent = money(t.now);
+    $("overview-later").textContent = money(t.later);
+    $("overview-paid").textContent = money(t.paid);
+    $("overview-project").textContent = money(t.project);
+
+    $("overview-budget").textContent =
+        t.budget === null ? "—" : money(t.budget);
+
+    const buffer = $("overview-buffer");
+
+    buffer.textContent =
+        t.buffer === null ? "—" : money(t.buffer);
+
+    buffer.className = "value " +
+        (t.buffer === null ? "" :
+            t.buffer >= 0 ? "green" : "red");
+
+    $("budget-progress").replaceChildren();
+
+    if (t.budget !== null && t.budget > 0) {
+        const bar = node("span");
+
+        bar.style.width =
+            Math.min(100, t.total / t.budget * 100) + "%";
+
+        if (t.total > t.budget) {
+            bar.style.background = "var(--red)";
+        }
+
+        $("budget-progress").append(bar);
+
+        $("budget-caption").textContent =
+            Math.round(t.total / t.budget * 100) +
+            "% van het beschikbare budget nodig";
+
+    } else {
+        $("budget-caption").textContent =
+            t.budget === null
+                ? "Stel je beschikbare budget in."
+                : "Geen beschikbaar budget ingesteld boven € 0.";
+    }
+
+    const completed = data.items.filter(
+        item => item.paid
+    ).length;
+
+    const percentage = data.items.length
+        ? Math.round(completed / data.items.length * 100)
+        : 0;
+
+    $("progress-caption").textContent =
+        completed + " van " +
+        data.items.length + " aankopen betaald";
+
+    $("progress-percent").textContent = percentage + "%";
+    $("progress-bar").style.width = percentage + "%";
+
+    $("unknown-caption").textContent =
+        t.unknown + " openstaande aankopen zonder gekend bedrag.";
+
+    const summary = $("priority-summary");
+    summary.replaceChildren();
+
+    for (const key of ["high", "medium", "low", ""]) {
+        const amount = data.items
+            .filter(item => item.priority === key)
+            .reduce((sum, item) =>
+                sum + remaining(item), 0);
+
+        const row = node("div", "", "row plan-row");
+
+        row.append(
+            node("span", PRIORITIES[key],
+                "priority-" + key),
+            node("strong", money(amount))
+        );
+
+        summary.append(row);
+    }
+
+    const extraRow = node("div", "", "row plan-row");
+
+    extraRow.append(
+        node("span", "Extra renovatiekosten"),
+        node("strong", money(data.extra))
+    );
+
+    summary.append(extraRow);
+
+    const next = $("next-payment");
+    next.replaceChildren();
+
+    if (t.future.length) {
+        const item = t.future[0];
+        const row = node("div", "", "row");
+        const description = node("div", "", "flex");
+
+        description.append(
+            node("strong", item.name),
+            node("div", dateLabel(item.dueDate), "muted")
+        );
+
+        row.append(
+            description,
+            node("strong", money(remaining(item)))
+        );
+
+        next.append(row);
+
+    } else {
+        next.append(
+            node("small", "Geen toekomstige betalingen.")
+        );
     }
 }
 
-$("connect").onclick = async () => {
+/* =====================================
+   AANKOPEN
+===================================== */
 
+function renderItems() {
+    const container = $("items");
+    container.replaceChildren();
+
+    const search = $("search").value.toLowerCase().trim();
+
+    let items = data.items.filter(item => {
+        const matchesFilter =
+            filter === "all" ||
+            (filter === "paid" ? item.paid : !item.paid);
+
+        const matchesSearch =
+            item.name.toLowerCase().includes(search) ||
+            item.notes.toLowerCase().includes(search);
+
+        return matchesFilter && matchesSearch;
+    });
+
+    const sort = $("sort").value;
+
+    if (sort === "priority") {
+        items.sort((a, b) =>
+            PRIORITY_ORDER[a.priority] -
+            PRIORITY_ORDER[b.priority]
+        );
+    }
+
+    if (sort === "amount") {
+        items.sort((a, b) =>
+            remaining(b) - remaining(a)
+        );
+    }
+
+    if (sort === "date") {
+        items.sort((a, b) =>
+            (a.dueDate || today())
+                .localeCompare(b.dueDate || today())
+        );
+    }
+
+    if (sort === "name") {
+        items.sort((a, b) =>
+            a.name.localeCompare(b.name, "nl")
+        );
+    }
+
+    if (!items.length) {
+        container.append(
+            node("p", "Geen aankopen gevonden.", "muted")
+        );
+        return;
+    }
+
+    for (const item of items) {
+        const wrapper = node("div", "", "item");
+        const row = node("div", "", "row");
+
+        const checkbox = document.createElement("input");
+
+        checkbox.type = "checkbox";
+        checkbox.checked = item.paid;
+        checkbox.setAttribute(
+            "aria-label", "Betaald: " + item.name
+        );
+
+        checkbox.onchange = async () => {
+            if (checkbox.checked && item.cents === null) {
+                checkbox.checked = false;
+                expanded = item.id;
+                renderItems();
+                notify("Vul eerst het totaalbedrag in.");
+                return;
+            }
+
+            const checked = checkbox.checked;
+
+            if (
+                !checked &&
+                item.paidCents > 0 &&
+                !confirm(
+                    "Deze aankoop heropenen en het " +
+                    "betaalde bedrag op nul zetten?"
+                )
+            ) {
+                checkbox.checked = true;
+                return;
+            }
+
+            const ok = await updateItem(
+                item.id,
+                {
+                    paid: checked,
+                    paidCents: checked
+                        ? item.cents : 0
+                },
+                checked ? "Aankoop betaald" : "Aankoop heropend"
+            );
+
+            if (!ok) checkbox.checked = item.paid;
+        };
+
+        const description = node("div", "", "flex");
+
+        description.append(
+            node(
+                "div",
+                item.name,
+                "item-name " +
+                (item.paid ? "paid-name" : "")
+            )
+        );
+
+        if (item.priority) {
+            description.append(
+                node(
+                    "span",
+                    PRIORITIES[item.priority],
+                    "priority priority-" + item.priority
+                )
+            );
+        }
+
+        const meta = [];
+
+        if (!item.paid && item.paidCents > 0) {
+            meta.push(
+                money(item.paidCents) + " betaald"
+            );
+        }
+
+        if (!item.paid && isFuture(item)) {
+            meta.push("📅 " + dateLabel(item.dueDate));
+        }
+
+        if (item.notes) {
+            meta.push("📝 Notitie");
+        }
+
+        if (meta.length) {
+            description.append(
+                node("div", meta.join(" · "), "item-meta")
+            );
+        }
+
+        if (
+            !item.paid &&
+            item.paidCents > 0 &&
+            item.cents > 0
+        ) {
+            const progress = node("div", "", "progress");
+            const bar = node("span");
+
+            bar.style.width =
+                Math.min(
+                    100,
+                    item.paidCents / item.cents * 100
+                ) + "%";
+
+            progress.append(bar);
+            description.append(progress);
+        }
+
+        const price = node(
+            "div",
+            item.cents === null
+                ? "Onbekend"
+                : money(item.paid
+                    ? item.cents : remaining(item)),
+            "item-price"
+        );
+
+        if (!item.paid && item.paidCents > 0) {
+            price.append(
+                node("div", "Resterend", "muted")
+            );
+        }
+
+        const toggle = node(
+            "button",
+            expanded === item.id ? "⌃" : "⌄",
+            "icon-button"
+        );
+
+        toggle.setAttribute(
+            "aria-label", "Details van " + item.name
+        );
+
+        toggle.onclick = () => {
+            if (
+                expanded !== null &&
+                detailsDirty() &&
+                !confirm("Niet-opgeslagen details verlaten?")
+            ) return;
+
+            expanded = expanded === item.id
+                ? null : item.id;
+
+            renderItems();
+        };
+
+        row.append(
+            checkbox,
+            description,
+            price,
+            toggle
+        );
+
+        wrapper.append(row);
+
+        if (expanded === item.id) {
+            wrapper.append(buildDetails(item));
+        }
+
+        container.append(wrapper);
+    }
+}
+
+function detailsDirty() {
+    return Boolean(
+        document.querySelector(
+            '.item-details[data-dirty="true"]'
+        )
+    );
+}
+
+function buildDetails(item) {
+    const panel = node("div", "", "item-details");
+
+    function field(labelText, value, type = "text") {
+        const label = node("label", labelText);
+        const input = document.createElement("input");
+
+        input.type = type;
+        input.value = value;
+
+        panel.append(label, input);
+
+        return input;
+    }
+
+    const name = field("Omschrijving", item.name);
+
+    const amount = field(
+        "Totaalbedrag (€)",
+        inputValue(item.cents)
+    );
+
+    amount.inputMode = "decimal";
+
+    const paid = field(
+        "Reeds betaald / voorschot (€)",
+        inputValue(item.paidCents)
+    );
+
+    paid.inputMode = "decimal";
+
+    const balance = node("div", "", "row");
+
+    balance.style.marginTop = "14px";
+
+    const balanceValue = node(
+        "strong", money(remaining(item)), "green"
+    );
+
+    balance.append(
+        node("span", "Resterend saldo"),
+        balanceValue
+    );
+
+    panel.append(balance);
+
+    function previewBalance() {
+        try {
+            const a = parseCents(amount.value, true);
+            const p = parseCents(paid.value);
+
+            balanceValue.textContent =
+                a === null
+                    ? "Onbekend"
+                    : money(Math.max(0, a - p));
+
+        } catch {
+            balanceValue.textContent = "—";
+        }
+    }
+
+    amount.oninput = previewBalance;
+    paid.oninput = previewBalance;
+
+    panel.append(node("label", "Prioriteit"));
+
+    const priority = document.createElement("select");
+
+    for (const key of ["", "high", "medium", "low"]) {
+        const option = node("option", PRIORITIES[key]);
+        option.value = key;
+        priority.append(option);
+    }
+
+    priority.value = item.priority;
+    panel.append(priority);
+
+    const date = field(
+        "Toekomstige betaaldatum",
+        item.dueDate,
+        "date"
+    );
+
+    panel.append(
+        node(
+            "small",
+            "Geen datum = nu nodig."
+        )
+    );
+
+    const clearDate = node("button", "Nu nodig", "full");
+
+    clearDate.style.marginTop = "8px";
+
+    clearDate.onclick = () => {
+        date.value = "";
+        panel.dataset.dirty = "true";
+    };
+
+    panel.append(clearDate);
+
+    panel.append(node("label", "Notities"));
+
+    const notes = document.createElement("textarea");
+
+    notes.value = item.notes;
+    notes.placeholder = "Leverancier, afspraken, voorschot…";
+
+    panel.append(notes);
+
+    panel.addEventListener("input", () => {
+        panel.dataset.dirty = "true";
+    });
+
+    panel.addEventListener("change", () => {
+        panel.dataset.dirty = "true";
+    });
+
+    const saveButton = node(
+        "button", "Opslaan", "primary full"
+    );
+
+    saveButton.style.marginTop = "14px";
+
+    saveButton.onclick = async () => {
+        try {
+            const cents = parseCents(amount.value, true);
+            const paidCents = parseCents(paid.value);
+
+            if (!name.value.trim()) {
+                throw new Error("Vul een omschrijving in.");
+            }
+
+            if (cents !== null && paidCents > cents) {
+                throw new Error(
+                    "Het voorschot mag niet hoger zijn " +
+                    "dan het totaalbedrag."
+                );
+            }
+
+            const patch = {
+                name: name.value.trim(),
+                cents,
+                paidCents,
+                paid: cents !== null
+                    ? paidCents >= cents
+                    : item.paid && paidCents === item.paidCents,
+                priority: priority.value,
+                dueDate: date.value,
+                notes: notes.value.trim()
+            };
+
+            const ok = await updateItem(
+                item.id,
+                patch,
+                "Aankoopdetails bijgewerkt"
+            );
+
+            if (ok) {
+                expanded = null;
+                renderItems();
+            }
+
+        } catch (error) {
+            notify(error.message);
+        }
+    };
+
+    panel.append(saveButton);
+
+    const remove = node(
+        "button", "Aankoop verwijderen", "danger full"
+    );
+
+    remove.style.marginTop = "8px";
+
+    remove.onclick = async () => {
+        if (!confirm(item.name + " definitief verwijderen?")) {
+            return;
+        }
+
+        const ok = await save(
+            "Aankoop verwijderd",
+            latest => {
+                const current = latest.items.find(
+                    entry => entry.id === item.id
+                );
+
+                if (
+                    JSON.stringify(current) !==
+                    JSON.stringify(item)
+                ) {
+                    throw new Error(
+                        "Aankoop intussen gewijzigd."
+                    );
+                }
+
+                latest.items = latest.items.filter(
+                    entry => entry.id !== item.id
+                );
+            }
+        );
+
+        if (ok) {
+            expanded = null;
+            renderItems();
+        }
+    };
+
+    panel.append(remove);
+
+    return panel;
+}
+
+/* =====================================
+   AANKOPEN TOEVOEGEN
+===================================== */
+
+$("show-add").onclick = () => {
+    $("add-card").hidden = false;
+
+    $("add-card").scrollIntoView({
+        behavior: "smooth"
+    });
+
+    $("new-name").focus();
+};
+
+$("cancel-add").onclick = () => {
+    $("add-card").hidden = true;
+};
+
+$("add-form").onsubmit = async event => {
+    event.preventDefault();
+
+    try {
+        const name = $("new-name").value.trim();
+
+        if (!name) {
+            throw new Error("Vul een omschrijving in.");
+        }
+
+        const cents = parseCents(
+            $("new-amount").value, true
+        );
+
+        const item = {
+            id: crypto.randomUUID(),
+            name,
+            cents,
+            paid: cents === 0,
+            paidCents: 0,
+            priority: $("new-priority").value,
+            dueDate: $("new-date").value,
+            notes: $("new-notes").value.trim()
+        };
+
+        const ok = await save(
+            "Aankoop toegevoegd",
+            latest => latest.items.push(item)
+        );
+
+        if (ok) {
+            $("add-form").reset();
+            $("add-card").hidden = true;
+        }
+
+    } catch (error) {
+        notify(error.message);
+    }
+};
+
+$("search").oninput = () => {
+    if (!detailsDirty()) renderItems();
+};
+
+$("sort").onchange = () => {
+    if (
+        detailsDirty() &&
+        !confirm("Niet-opgeslagen details verlaten?")
+    ) return;
+
+    expanded = null;
+    renderItems();
+};
+
+document.querySelectorAll("[data-filter]").forEach(button => {
+    button.onclick = () => {
+        if (
+            detailsDirty() &&
+            !confirm("Niet-opgeslagen details verlaten?")
+        ) return;
+
+        filter = button.dataset.filter;
+        expanded = null;
+
+        document.querySelectorAll("[data-filter]")
+            .forEach(entry => {
+                entry.classList.toggle(
+                    "active",
+                    entry.dataset.filter === filter
+                );
+            });
+
+        renderItems();
+    };
+});
+
+/* =====================================
+   BETALINGSPLANNING
+===================================== */
+
+function renderPlanning() {
+    const t = totals();
+
+    $("planning-now").textContent = money(t.now);
+    $("planning-later").textContent = money(t.later);
+
+    const list = $("planning-list");
+    list.replaceChildren();
+
+    const nowRow = node("div", "", "row plan-row");
+
+    nowRow.append(
+        node("strong", "Nu nodig"),
+        node("strong", money(t.now))
+    );
+
+    list.append(nowRow);
+
+    const months = [
+        ...new Set(
+            t.future.map(item => item.dueDate.slice(0, 7))
+        )
+    ].sort();
+
+    let cumulative = t.now;
+
+    for (const month of months) {
+        const items = t.future.filter(item =>
+            item.dueDate.startsWith(month)
+        );
+
+        const amount = items.reduce(
+            (sum, item) => sum + remaining(item), 0
+        );
+
+        cumulative += amount;
+
+        const group = node("div", "", "plan-row");
+        const header = node("div", "", "row");
+
+        header.append(
+            node("strong", monthLabel(month)),
+            node("strong", money(amount))
+        );
+
+        group.append(header);
+
+        for (const item of items) {
+            const row = node("div", "", "row");
+
+            row.style.marginTop = "10px";
+
+            const description = node("div", "", "flex");
+
+            description.append(
+                node("div", item.name),
+                node("small", dateLabel(item.dueDate))
+            );
+
+            row.append(
+                description,
+                node("span", money(remaining(item)))
+            );
+
+            group.append(row);
+        }
+
+        const cumulativeRow = node(
+            "div", "", "row muted"
+        );
+
+        cumulativeRow.style.marginTop = "12px";
+
+        cumulativeRow.append(
+            node("span", "Cumulatief nodig"),
+            node("strong", money(cumulative))
+        );
+
+        group.append(cumulativeRow);
+        list.append(group);
+    }
+
+    if (!months.length) {
+        list.append(
+            node(
+                "p",
+                "Geen toekomstige betalingen ingepland.",
+                "muted"
+            )
+        );
+    }
+
+    const totalRow = node("div", "", "row plan-row");
+
+    totalRow.append(
+        node("strong", "Totaal"),
+        node("strong", money(t.total), "green")
+    );
+
+    list.append(totalRow);
+
+    if (t.unknown) {
+        list.append(
+            node(
+                "p",
+                t.unknown +
+                " aankopen zonder gekend bedrag zijn " +
+                "niet volledig meegerekend.",
+                "muted"
+            )
+        );
+    }
+
+    const editor = $("planning-edit");
+    editor.replaceChildren();
+
+    for (const item of data.items.filter(i => !i.paid)) {
+        const wrapper = node("div", "", "plan-row");
+        const header = node("div", "", "row");
+
+        header.append(
+            node("strong", item.name),
+            node(
+                "span",
+                item.cents === null
+                    ? "Onbekend" : money(remaining(item))
+            )
+        );
+
+        wrapper.append(header);
+
+        const date = document.createElement("input");
+
+        date.type = "date";
+        date.value = item.dueDate;
+        date.style.marginTop = "10px";
+
+        date.onchange = async () => {
+            const ok = await updateItem(
+                item.id,
+                { dueDate: date.value },
+                "Betaaldatum aangepast"
+            );
+
+            if (!ok) date.value = item.dueDate;
+        };
+
+        wrapper.append(date);
+
+        if (item.dueDate) {
+            const clear = node(
+                "button", "Verplaats naar nu", "full"
+            );
+
+            clear.style.marginTop = "6px";
+
+            clear.onclick = () => updateItem(
+                item.id,
+                { dueDate: "" },
+                "Betaling naar nu verplaatst"
+            );
+
+            wrapper.append(clear);
+        }
+
+        editor.append(wrapper);
+    }
+}
+
+/* =====================================
+   INSTELLINGEN
+===================================== */
+
+function renderSettings() {
+    $("repo-label").textContent = repo;
+
+    if (!settingsDirty) {
+        $("available-budget").value =
+            inputValue(data.availableBudgetCents);
+
+        $("extra-budget").value =
+            inputValue(data.extra);
+    }
+}
+
+$("available-budget").oninput =
+$("extra-budget").oninput = () => {
+    settingsDirty = true;
+};
+
+$("save-settings").onclick = async () => {
+    try {
+        const budget = parseCents(
+            $("available-budget").value, true
+        );
+
+        const extra = parseCents(
+            $("extra-budget").value
+        );
+
+        const originalBudget = data.availableBudgetCents;
+        const originalExtra = data.extra;
+
+        if (
+            budget === originalBudget &&
+            extra === originalExtra
+        ) {
+            settingsDirty = false;
+            notify("Geen wijzigingen.");
+            return;
+        }
+
+        const ok = await save(
+            "Budgetinstellingen aangepast",
+            latest => {
+                if (
+                    budget !== originalBudget &&
+                    latest.availableBudgetCents !== originalBudget
+                ) {
+                    throw new Error(
+                        "Beschikbaar budget intussen gewijzigd."
+                    );
+                }
+
+                if (
+                    extra !== originalExtra &&
+                    latest.extra !== originalExtra
+                ) {
+                    throw new Error(
+                        "Extra budget intussen gewijzigd."
+                    );
+                }
+
+                if (budget !== originalBudget) {
+                    latest.availableBudgetCents = budget;
+                }
+
+                if (extra !== originalExtra) {
+                    latest.extra = extra;
+                }
+            }
+        );
+
+        if (ok) {
+            settingsDirty = false;
+            renderSettings();
+        }
+
+    } catch (error) {
+        notify(error.message);
+    }
+};
+
+/* =====================================
+   RENDEREN
+===================================== */
+
+function renderAll() {
+    if (!data) return;
+
+    const t = totals();
+
+    $("footer-total").textContent = money(t.total);
+
+    $("footer-buffer").textContent =
+        t.buffer === null ? "—" : money(t.buffer);
+
+    $("footer-buffer").className =
+        t.buffer === null ? "" :
+        t.buffer >= 0 ? "green" : "red";
+
+    if (activeTab === "overview") renderOverview();
+    if (activeTab === "items") renderItems();
+    if (activeTab === "planning") renderPlanning();
+    if (activeTab === "settings") renderSettings();
+}
+
+/* =====================================
+   VERBINDING EN SYNCHRONISATIE
+===================================== */
+
+try {
+    const savedRepo = localStorage.getItem("reno-repo");
+
+    if (savedRepo) {
+        $("repo").value = savedRepo;
+    } else if (location.hostname.endsWith(".github.io")) {
+        const owner = location.hostname.split(".")[0];
+        const repository = location.pathname.split("/")[1];
+
+        if (repository) {
+            $("repo").value = owner + "/" + repository;
+        }
+    }
+} catch {}
+
+$("connect").onclick = async () => {
     repo = $("repo").value.trim();
     token = $("token").value.trim();
 
     if (!/^[\w.-]+\/[\w.-]+$/.test(repo) || !token) {
-        status("Vul repository en token in");
+        notify("Vul repository en token in.");
         return;
     }
 
     $("connect").disabled = true;
+    setStatus("Verbinden met GitHub…");
 
     try {
-
         await load();
 
+        try {
+            localStorage.setItem("reno-repo", repo);
+        } catch {}
+
+        $("token").value = "";
         $("login").hidden = true;
         $("app").hidden = false;
-        $("dock").hidden = false;
-        $("token").value = "";
+        $("bottom").hidden = false;
+
+        switchTab("overview");
 
     } catch (error) {
-
-        status(error.message);
         token = "";
+        data = null;
+        setStatus(error.message, true);
+        notify(error.message);
 
     } finally {
-
         $("connect").disabled = false;
     }
 };
 
-$("logout").onclick = () => location.reload();
+function hasDraft() {
+    return detailsDirty() ||
+        settingsDirty ||
+        !$("add-card").hidden;
+}
 
-async function refresh() {
+async function refresh(manual = false) {
+    if (!data || busy || loading) return;
 
-    if (busy || loading) return;
+    if (hasDraft()) {
+        if (!manual) return;
+
+        if (!confirm(
+            "Synchroniseren en niet-opgeslagen " +
+            "wijzigingen verlaten?"
+        )) return;
+
+        expanded = null;
+        settingsDirty = false;
+        $("add-card").hidden = true;
+        $("add-form").reset();
+    }
+
+    if (
+        !manual &&
+        document.activeElement.matches(
+            "input, textarea, select"
+        )
+    ) return;
 
     loading = true;
 
     try {
-
         const result = await api();
 
+        if (busy || hasDraft()) return;
+
         if (
-            !busy &&
-            !$("app").contains(document.activeElement)
-        ) {
+            !manual &&
+            document.activeElement.matches(
+                "input, textarea, select"
+            )
+        ) return;
 
-            if (result.sha !== sha) {
+        if (result.sha !== sha || manual) {
+            data = normalize(
+                decodeJSON(result.content)
+            );
 
-                data = dec(result.content);
-                sha = result.sha;
+            sha = result.sha;
+            renderAll();
 
-                render();
-            }
+        } else if (activeTab === "overview") {
+            renderOverview();
+        } else if (activeTab === "planning") {
+            renderPlanning();
+        }
 
-            status("Online • laatste versie geladen");
+        markSynced();
+
+        if (manual) {
+            notify("✓ Laatste versie geladen");
         }
 
     } catch (error) {
-
-        status(error.message);
+        setStatus(
+            "Synchronisatie mislukt: " + error.message,
+            true
+        );
 
     } finally {
-
         loading = false;
     }
 }
 
-$("reload").onclick = () => {
-    $("reload").blur();
-    refresh();
-};
+$("reload").onclick = () => refresh(true);
 
-$("filter").onchange = render;
+setInterval(() => {
+    if (!document.hidden) refresh();
+}, 20000);
 
-$("extra").onchange = () => {
+document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) refresh();
+});
 
-    try {
-
-        const value = cents($("extra").value) || 0;
-        const old = data.extra;
-
-        if (value !== old) {
-
-            save("Extra budget bijgewerkt", d => {
-
-                if (d.extra !== old) {
-                    throw new Error(
-                        "Extra budget intussen gewijzigd"
-                    );
-                }
-
-                d.extra = value;
-            });
-        }
-
-    } catch (error) {
-
-        status(error.message);
-        render();
-    }
-};
-
-$("add").onsubmit = event => {
-
-    event.preventDefault();
-
-    try {
-
-        const item = {
-            id: crypto.randomUUID(),
-            name: $("name").value.trim(),
-            cents: cents($("amount").value),
-            paid: false
-        };
-
-        if (!item.name) return;
-
-        save("Aankoop toegevoegd", d => {
-            d.items.push(item);
-        });
-
-        $("name").value = "";
-        $("amount").value = "";
-
-    } catch (error) {
-
-        status(error.message);
-    }
-};
+/* =====================================
+   BACK-UP EN UITLOGGEN
+===================================== */
 
 $("backup").onclick = () => {
-
     const blob = new Blob(
         [JSON.stringify(data, null, 2)],
         { type: "application/json" }
@@ -777,27 +2473,35 @@ $("backup").onclick = () => {
     const link = document.createElement("a");
 
     link.href = url;
-    link.download = "budget-backup.json";
+    link.download = "renovatie-backup-" + today() + ".json";
+
     link.click();
 
     setTimeout(() => URL.revokeObjectURL(url), 1000);
 };
 
-setInterval(() => {
-
-    if (
-        data &&
-        !busy &&
-        !$("app").contains(document.activeElement)
-    ) {
-        refresh();
+$("logout").onclick = () => {
+    if (busy) {
+        notify("Wacht tot het opslaan voltooid is.");
+        return;
     }
 
-}, 20000);
+    if (
+        hasDraft() &&
+        !confirm("Uitloggen zonder wijzigingen op te slaan?")
+    ) return;
+
+    settingsDirty = false;
+    expanded = null;
+    $("add-card").hidden = true;
+    $("items").replaceChildren();
+
+    token = "";
+    location.reload();
+};
 
 window.addEventListener("beforeunload", event => {
-
-    if (busy) {
+    if (busy || (data && hasDraft())) {
         event.preventDefault();
         event.returnValue = "";
     }
