@@ -162,6 +162,12 @@
       "name": "Dovy-keuken",
       "cents": 900000,
       "paid": false
+    },
+    {
+      "id": "b256b96f-7555-4e0f-bd9f-6aa5da18d44e",
+      "name": "Cbs-tegels",
+      "cents": 1100000,
+      "paid": false
     }
   ]
 }
