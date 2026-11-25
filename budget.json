@@ -260,6 +260,16 @@
       "dueDate": "",
       "priority": "high",
       "notes": ""
+    },
+    {
+      "id": "053f528d-77c2-4b53-9f27-fff19882cd3c",
+      "name": "Camera",
+      "cents": 100000,
+      "paid": false,
+      "paidCents": 0,
+      "priority": "",
+      "dueDate": "",
+      "notes": ""
     }
   ],
   "schemaVersion": 2,
