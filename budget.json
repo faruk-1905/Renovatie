@@ -178,7 +178,7 @@
       "paid": false,
       "paidCents": 0,
       "dueDate": "",
-      "priority": "",
+      "priority": "medium",
       "notes": ""
     },
     {
