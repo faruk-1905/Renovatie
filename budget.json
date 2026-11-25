@@ -156,6 +156,12 @@
       "name": "Afdekplaatjes wc",
       "cents": 18430,
       "paid": false
+    },
+    {
+      "id": "d9795512-948a-4481-92a9-3f8fbaacab43",
+      "name": "Dovy",
+      "cents": 900000,
+      "paid": false
     }
   ]
 }
