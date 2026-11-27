@@ -184,10 +184,10 @@
     {
       "id": "18",
       "name": "Bureau",
-      "cents": 57000,
+      "cents": 61600,
       "paid": false,
       "paidCents": 0,
-      "dueDate": "2027-01-15",
+      "dueDate": "2026-12-26",
       "priority": "low",
       "notes": ""
     },
